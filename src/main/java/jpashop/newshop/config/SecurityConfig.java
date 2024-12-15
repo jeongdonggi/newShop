@@ -3,6 +3,8 @@ package jpashop.newshop.config;
 import jpashop.newshop.Domain.UserRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,6 +21,17 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    // 권한 계층 구조
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+
+        roleHierarchy.setHierarchy(UserRole.ADMIN.getKey()+" > " + UserRole.USER.getKey()); // 개행은 "/n" 이용
+
+        return roleHierarchy;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -29,7 +42,7 @@ public class SecurityConfig {
                 authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/","/login","/join","/joinProc").permitAll()
                         .requestMatchers("/admin").hasAnyAuthority(UserRole.ADMIN.getKey()) // hasRole은 기본적으로 앞에 ROLE_ 을 붙여준다.
-                        .requestMatchers("/my/**").hasAnyAuthority(UserRole.ADMIN.getKey(), UserRole.USER.getKey()) // getAuthorities 반환값으로 평가
+                        .requestMatchers("/my/**").hasAnyAuthority(UserRole.USER.getKey()) // getAuthorities 반환값으로 평가
                         .anyRequest().authenticated()
                 );
         /**
@@ -46,9 +59,14 @@ public class SecurityConfig {
         /**
          * CSRF 비활성화: 배포 환경에서는 활성화 해주어야 됨
          */
-//        http
-//                .csrf(AbstractHttpConfigurer::disable);
+        http
+                .csrf(AbstractHttpConfigurer::disable);
         // POST,PUT,DELETE 요청에 대해 토큰 검증을 진행한다. 구문을 없애주면 자동으로 처리해준다.
+//        http
+//                .csrf((csrf) ->
+//                        csrf
+//                                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                );
         /**
          * 다중 로그인 설정
          */
@@ -68,6 +86,14 @@ public class SecurityConfig {
                 .sessionManagement((auth) ->
                         auth
                                 .sessionFixation().changeSessionId()
+                );
+        /**
+         * Logout
+         */
+        http
+                .logout((auth) ->
+                        auth.logoutUrl("/logout")
+                                .logoutSuccessUrl("/")
                 );
 
 

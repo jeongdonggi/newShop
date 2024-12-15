@@ -8,9 +8,10 @@
 login page<!-- 로그인 검증 XMLHttpRequest 사용해보기 -->
 <hr>
 <form action="/loginProc" method="post" name="loginForm">
-  <input id="username" type="text" name="username" placeholder="id"/>
-  <input id="password" type="password" name="password" placeholder="password"/>
-  <input type="submit" value="login"/>
+    <input id="username" type="text" name="username" placeholder="id"/>
+    <input id="password" type="password" name="password" placeholder="password"/>
+<!--    <input type="hidden" name="_csrf" value="${_csrf.token}"/>-->
+    <input type="submit" value="login"/>
 </form>
 </body>
 </html>
