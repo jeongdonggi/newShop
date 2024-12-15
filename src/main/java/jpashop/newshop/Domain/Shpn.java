@@ -14,9 +14,8 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class Shpn {
     @Id
-    @GeneratedValue
     @Column(name = "shpn_id")
-    private int id;
+    private String shpnNo;
 
     //order
     @OneToOne(mappedBy = "shpn")

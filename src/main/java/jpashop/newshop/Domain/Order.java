@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="ORDER")
+@Table(name="ORDERS")
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 public class Order {
@@ -26,11 +26,11 @@ public class Order {
 
     // user
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="order_no")
+    @JoinColumn(name="user_id")
     private User user;
 
     // shpn
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "shpn_id")
     private Shpn shpn;
 

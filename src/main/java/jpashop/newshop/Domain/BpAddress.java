@@ -7,15 +7,15 @@ import lombok.Getter;
 @Getter
 public class BpAddress {
 
-    private String addr_1;
-    private String addr_2;
-    private String zipcode;
+    private String bp_addr_1;
+    private String bp_addr_2;
+    private String bp_zipcode;
 
     protected BpAddress(){}
 
-    public BpAddress(String addr_1, String addr_2, String zipcode) {
-        this.addr_1 = addr_1;
-        this.addr_2 = addr_2;
-        this.zipcode = zipcode;
+    public BpAddress(String bp_addr_1, String bp_addr_2, String bp_zipcode) {
+        this.bp_addr_1 = bp_addr_1;
+        this.bp_addr_2 = bp_addr_2;
+        this.bp_zipcode = bp_zipcode;
     }
 }

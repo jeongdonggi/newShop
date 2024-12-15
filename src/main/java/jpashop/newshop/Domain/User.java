@@ -3,7 +3,6 @@ package jpashop.newshop.Domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -20,10 +19,19 @@ public class User {
     @Column(name = "user_id")
     private String id;
 
+//    @Column(unique = true, nullable = false)
     private String userNm;
 
+    @Column(unique = true, nullable = false)
+    private String password;
+
+//    @Column(unique = true, nullable = false)
+    private String Email;
+
+    private String Role;
+
     @Embedded
-    private Address adress;
+    private Address address;
 
     @Embedded
     private BpAddress bpAddress;
@@ -43,7 +51,12 @@ public class User {
 
     private String modiNm;
 
-    @LastModifiedDate
     private LocalDateTime lastLoginDttm;
+
+    public void addIdPw(String id, String password) {
+        this.id = id;
+        this.password = password;
+        this.Role = UserRole.USER.getKey();
+    }
 
 }

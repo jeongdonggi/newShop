@@ -6,6 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,7 +24,7 @@ public class Item {
     private Long stockQuantity;
 
     @OneToMany(mappedBy = "item")
-    private List<Item> items;
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     // Category
     @Enumerated(EnumType.STRING)
